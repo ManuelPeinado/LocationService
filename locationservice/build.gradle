@@ -1,11 +1,17 @@
-apply plugin: 'java'
+apply plugin: 'android-library'
 
 repositories {
     mavenLocal()
 }
 
-
 dependencies {
-    compile 'android:android:4.2.2_r2' 
-    compile 'com.google.android.gms:google-play-services:9'
+   compile 'com.android.support:support-v4:13.0.+'
+   compile 'com.google.android.gms:google-play-services:9'
 }
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion '17.0.0'
+}
+
+
