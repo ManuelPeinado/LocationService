@@ -1,0 +1,11 @@
+apply plugin: 'java'
+
+repositories {
+    mavenLocal()
+}
+
+
+dependencies {
+    compile 'android:android:4.2.2_r2' 
+    compile 'com.google.android.gms:google-play-services:9'
+}
