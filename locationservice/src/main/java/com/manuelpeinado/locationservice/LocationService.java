@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,6 +25,8 @@ public class LocationService extends Service implements
         LocationListener {
 
     protected static final String TAG = LocationService.class.getSimpleName();
+    public static final String ACTION_NEW_LOCATION = "com.manuelpeinado.locationservice.action.newlocation";
+    public static final String EXTRA_LOCATION = "location";
     private LocationClient mLocationClient;
     private LocationRequest mLocationRequest;
 
@@ -57,7 +60,7 @@ public class LocationService extends Service implements
     public void onDestroy() {
         Log.d(TAG, "onDestroy()");
 
-        if (mLocationClient.isConnected()) {
+        if (mLocationClient != null && mLocationClient.isConnected()) {
             mLocationClient.removeLocationUpdates(this);
             mLocationClient.disconnect();
         }
@@ -66,8 +69,8 @@ public class LocationService extends Service implements
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.d(TAG, "New location: " + Utils.format(location));
-        Toast.makeText(this, "New location: " + Utils.format(location), Toast.LENGTH_SHORT).show();
+    	Intent intent = new Intent(ACTION_NEW_LOCATION).putExtra(EXTRA_LOCATION, location);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
     private boolean servicesAvailable() {
@@ -83,7 +86,8 @@ public class LocationService extends Service implements
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "Connected to Google Play Services.");
-        Log.d(TAG, "Last location is: " + Utils.format(mLocationClient.getLastLocation()));
+        Location lastLocation = mLocationClient.getLastLocation();
+    	Log.d(TAG, "Last location is: " + (lastLocation == null ? "null" : Utils.format(lastLocation)));
         mLocationClient.requestLocationUpdates(mLocationRequest, this);
     }
 
