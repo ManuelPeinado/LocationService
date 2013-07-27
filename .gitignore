@@ -15,10 +15,12 @@ gen/
 # Local configuration file (sdk path, etc)
 local.properties
 
-# Eclipse project files
+# Eclipse stuff
 .classpath
 .project
 .settings
+project.properties
+locationservice/src/main/libs/
 
 # Maven
 target
